@@ -14,6 +14,7 @@
   --content-width:clamp(80rem,89vw,200rem);
   --space:clamp(66px,8.2vw,7.625rem);
   --mono:ui-monospace,Consolas,monospace;
+  --large-cube-width:min(43%,15rem);
 }
 
 *,*::before,*::after{box-sizing:border-box}
@@ -75,7 +76,7 @@ h1 em,h2 em{font-family:'Plex Serif',Georgia,serif;font-weight:500;letter-spacin
 .hero-stage::after{inset:-21% -8% auto auto;width:min(48vw,43.75rem);aspect-ratio:716/599;background:url(matrix-outline-light.svg) center/contain no-repeat;opacity:.12;transform:rotate(-12deg)}
 .hero-frame{position:absolute;inset:clamp(16px,2.3vw,2.3125rem);z-index:2;pointer-events:none}
 .hero{display:grid;grid-template-columns:1.03fr 1fr;align-items:center;gap:clamp(1.75rem,3.3vw,3.375rem);padding-block:clamp(3.125rem,5.4vw,5.3125rem)}
-.hero-copy{position:relative;z-index:1}
+.hero-copy{position:relative;z-index:1;translate:0 calc(-1 * clamp(1.15rem,5vw - 1.25rem,3.25rem))}
 .hero h1{font-size:clamp(3rem,5.2vw,5rem);text-wrap:initial}
 .hero h1 .hero-accent{color:var(--orange)}
 .hero-intro{font-size:clamp(.9375rem,1.24vw,1.0625rem);color:#e1e5e6;max-width:31.25rem;margin-top:1.4375rem}
@@ -101,7 +102,7 @@ h1 em,h2 em{font-family:'Plex Serif',Georgia,serif;font-weight:500;letter-spacin
 @keyframes cube-settle{0%{opacity:.1;transform:translate(4%,7%) scale(.9) rotate(5deg)}60%{opacity:1;transform:translateY(-1.8%) scale(1.015) rotate(-1.25deg)}100%{opacity:1;transform:none}}
 @keyframes cube-glow{0%,8%,65%,100%{opacity:0;transform:scale(.88)}28%{opacity:1;transform:scale(1.06)}42%{opacity:.54;transform:scale(1.13)}}
 .cube-dock,.cube-traveller{pointer-events:none;visibility:hidden;aspect-ratio:1;filter:drop-shadow(0 .45rem .55rem #17101b54)}
-.cube-dock{position:absolute}
+.cube-dock{--dock-enter:cube-dock-enter 1.45s cubic-bezier(.32,.58,.28,1) both;position:absolute}
 .stat .cube-dock{top:-1.05rem;right:-.65rem;width:clamp(4.75rem,9.3vw,8.5rem)}
 .cube-traveller{position:fixed;z-index:3;inset:0 auto auto 0;width:1px;max-width:none}
 [data-cube-location=flight] .cube-traveller,[data-cube-location=stat] [data-cube-dock=stat]{visibility:visible}
@@ -128,9 +129,9 @@ h1 em,h2 em{font-family:'Plex Serif',Georgia,serif;font-weight:500;letter-spacin
 .person h3{font-size:clamp(1.25rem,2.2vw,1.75rem);margin-bottom:0.25rem}
 .person p{color:var(--muted);font-size:.9375rem;line-height:1.4}
 .team .split-intro>p{font-size:1.1875rem}
-.team-support{--team-cube-width:min(43%,15rem);grid-column:span 2;position:relative;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;background:linear-gradient(145deg,#34414c,#252f38);border-top:3px solid var(--orange);color:var(--white);padding:clamp(1.25rem,3.3vw,3.2rem);padding-inline-end:calc(var(--team-cube-width) + .85rem)}
-.team-support .cube-dock{top:-1.9rem;right:-.85rem;width:var(--team-cube-width)}
-.team-support.cube-in-view .cube-dock{visibility:visible;animation:cube-dock-enter 1.45s cubic-bezier(.32,.58,.28,1) both}
+.team-support{grid-column:span 2;position:relative;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;background:linear-gradient(145deg,#34414c,#252f38);border-top:3px solid var(--orange);color:var(--white);padding:clamp(1.25rem,3.3vw,3.2rem);padding-inline-end:calc(var(--large-cube-width) + .85rem)}
+.team-support .cube-dock{top:-1.9rem;right:-.85rem;width:var(--large-cube-width)}
+.team-support.cube-in-view .cube-dock{visibility:visible;animation:var(--dock-enter)}
 @keyframes cube-dock-enter{
   from{opacity:0;transform:translate(-.65rem,3.25rem) rotate(18deg) scale(.66)}
   30%{opacity:1}
@@ -243,6 +244,7 @@ textarea{resize:vertical;display:block}
 
 @media(min-width:100rem){
   .hero{padding-block:clamp(2.5rem,3.5vw,4rem)}
+  .hero-copy{translate:0 -2rem}
   .hero-intro{max-width:35rem}
   .hero-visual{width:min(113%,47.5rem,max(83%,calc(100svh - 10.5rem)));justify-self:center;margin-inline:0}
 }
@@ -260,12 +262,15 @@ textarea{resize:vertical;display:block}
   .nav-cta{margin-left:auto}
   .hero,.risk-grid,.split-intro,.contact-grid,.faq{grid-template-columns:1fr}
   .hero{gap:1.8125rem}
+  .hero-copy{translate:none}
   .hero h1{font-size:clamp(2.875rem,8.6vw,4.5625rem);max-width:40.625rem}
   .hero h1 em{display:inline-block}
   .hero-break{display:none}
   .hero-visual{width:min(100%,38.75rem);margin:-0.625rem auto 0}
   .hero-stage::after{width:65vw;top:auto;bottom:-10%;right:-15%}
   .risk{background-position:right -2.5rem bottom -3rem;background-size:82% auto}
+  .stat .cube-dock{top:-1.9rem;right:-.85rem;width:var(--large-cube-width)}
+  .stat.cube-in-view .cube-dock{visibility:visible;animation:var(--dock-enter)}
   .faq::before{background-position:left bottom -3rem;background-size:min(74%,28rem) auto}
   .risk-copy h2,.split-intro h2,.faq h2,.contact h2{max-width:40rem;text-wrap:initial}
   .risk-grid,.split-intro,.contact-grid,.faq{gap:1.6875rem}

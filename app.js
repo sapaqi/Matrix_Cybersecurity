@@ -31,6 +31,7 @@ for (const form of document.querySelectorAll('.email-form')) {
 
 if ('IntersectionObserver' in window) {
   const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const compactLayout = window.matchMedia('(max-width: 50rem)');
   const hero = document.querySelector('.hero-visual');
   const stat = document.querySelector('.stat');
   const statValue = stat.querySelector('.stat-value');
@@ -87,7 +88,7 @@ if ('IntersectionObserver' in window) {
   function syncParticles() {
     setParticleMotion(hero.classList.contains('in-view') && document.body.dataset.cubeLocation === 'hero');
   }
-  createCubeJourney(hero, motion, syncParticles);
+  createCubeJourney(hero, motion, compactLayout, syncParticles);
   const heroObserver = new IntersectionObserver(([entry]) => {
     hero.classList.toggle('in-view', entry.isIntersecting);
     if (entry.isIntersecting) hero.classList.add('has-entered');
@@ -95,14 +96,16 @@ if ('IntersectionObserver' in window) {
   });
   heroObserver.observe(hero);
 
-  const teamSupport = document.querySelector('.team-support');
-  const teamObserver = new IntersectionObserver(([entry]) => {
-    teamSupport.classList.toggle('cube-in-view', entry.intersectionRatio >= .1);
+  const dockObserver = new IntersectionObserver((entries) => {
+    for (const { target, intersectionRatio } of entries) {
+      target.classList.toggle('cube-in-view', intersectionRatio >= .1);
+    }
   }, { threshold: .1 });
-  teamObserver.observe(teamSupport);
+  dockObserver.observe(stat);
+  dockObserver.observe(document.querySelector('.team-support'));
 }
 
-function createCubeJourney(hero, motion, onLocationChange) {
+function createCubeJourney(hero, motion, compactLayout, onLocationChange) {
   const statDock = document.querySelector('[data-cube-dock=stat]');
   const traveller = document.querySelector('.cube-traveller');
   let frame = 0;
@@ -131,7 +134,7 @@ function createCubeJourney(hero, motion, onLocationChange) {
 
   function update() {
     frame = 0;
-    if (motion.matches) {
+    if (motion.matches || compactLayout.matches) {
       setLocation('hero');
       return;
     }
@@ -155,6 +158,7 @@ function createCubeJourney(hero, motion, onLocationChange) {
   window.addEventListener('scroll', schedule, { passive: true });
   window.addEventListener('resize', schedule);
   motion.addEventListener('change', schedule);
+  compactLayout.addEventListener('change', schedule);
   document.fonts.ready.then(schedule);
   schedule();
 }
