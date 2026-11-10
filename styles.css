@@ -75,8 +75,9 @@ h1 em,h2 em{font-family:'Plex Serif',Georgia,serif;font-weight:500;letter-spacin
 .hero-stage::before{inset:0;background:radial-gradient(#dbe3e934 1px,transparent 1.25px) center/1.5rem 1.5rem}
 .hero-stage::after{inset:-21% -8% auto auto;width:min(48vw,43.75rem);aspect-ratio:716/599;background:url(matrix-outline-light.svg) center/contain no-repeat;opacity:.12;transform:rotate(-12deg)}
 .hero-frame{position:absolute;inset:clamp(16px,2.3vw,2.3125rem);z-index:2;pointer-events:none}
-.hero{display:grid;grid-template-columns:1.03fr 1fr;align-items:center;gap:clamp(1.75rem,3.3vw,3.375rem);padding-block:clamp(3.125rem,5.4vw,5.3125rem)}
-.hero-copy{position:relative;z-index:1;translate:0 calc(-1 * clamp(1.15rem,5vw - 1.25rem,3.25rem))}
+.hero{--hero-gutter:clamp(3.125rem,5.4vw,5.3125rem);--hero-lift:clamp(1.15rem,5vw - 1.25rem,3.25rem);display:grid;grid-template-columns:1.03fr 1fr;align-items:center;gap:clamp(1.75rem,3.3vw,3.375rem);padding-block:max(3rem,var(--hero-gutter)) var(--hero-gutter)}
+/* Bias grid centering upward while keeping the copy inside the top padding. */
+.hero-copy{position:relative;z-index:1;margin-block-end:calc(2 * var(--hero-lift))}
 .hero h1{font-size:clamp(3rem,5.2vw,5rem);text-wrap:initial}
 .hero h1 .hero-accent{color:var(--orange)}
 .hero-intro{font-size:clamp(.9375rem,1.24vw,1.0625rem);color:#e1e5e6;max-width:31.25rem;margin-top:1.4375rem}
@@ -243,10 +244,12 @@ textarea{resize:vertical;display:block}
 @keyframes arrive{from{opacity:.12;transform:translateY(1.85rem)}to{opacity:1;transform:none}}
 
 @media(min-width:100rem){
-  .hero{padding-block:clamp(2.5rem,3.5vw,4rem)}
-  .hero-copy{translate:0 -2rem}
+  .hero{--hero-gutter:clamp(2.5rem,3.5vw,4rem);--hero-lift:2rem}
   .hero-intro{max-width:35rem}
   .hero-visual{width:min(113%,47.5rem,max(83%,calc(100svh - 10.5rem)));justify-self:center;margin-inline:0}
+}
+@media(min-width:2000px){
+  .hero{--hero-lift:min(1.25rem,1.15vw)}
 }
 @media(max-width:67.5rem){
   .hero{gap:1.5625rem}
@@ -261,8 +264,7 @@ textarea{resize:vertical;display:block}
   .site-header nav{display:none}
   .nav-cta{margin-left:auto}
   .hero,.risk-grid,.split-intro,.contact-grid,.faq{grid-template-columns:1fr}
-  .hero{gap:1.8125rem}
-  .hero-copy{translate:none}
+  .hero{--hero-lift:0rem;gap:1.8125rem}
   .hero h1{font-size:clamp(2.875rem,8.6vw,4.5625rem);max-width:40.625rem}
   .hero h1 em{display:inline-block}
   .hero-break{display:none}
