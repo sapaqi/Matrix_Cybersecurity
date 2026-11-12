@@ -1,4 +1,4 @@
-# Matrix Internet Cybersecurity V3
+# Matrix Internet Cybersecurity V3 with revised copy
 
 Standalone static landing page. Open `index.html` for a local preview. The site includes its images and IBM Plex fonts. No dependencies or build step are required.
 
